@@ -22,8 +22,7 @@ router.post('/createProject', async (req, res) => {
 // 获取所有项目
 router.get('/getAllProjects', async (req, res) => {
     try {
-        const projects = await Projects.find().exec();
-        res.json(projects);
+        c
     } catch (err) {
         console.error('获取项目列表出错:', err);
         res.status(500).send('获取项目列表出错');

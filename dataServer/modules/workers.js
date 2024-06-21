@@ -76,4 +76,29 @@ router.post('/deleteWorker/:workerId', async (req, res) => {
     }
 });
 
+// 登录
+router.post('/login', async (req, res) => {
+    const { phone, password } = req.body;
+    try {
+        // 根据手机号查询数据库中的工人信息
+        const worker = await Workers.findOne({ phone });
+
+        if (!worker) {
+            return res.status(404).json({ message: '工人不存在' });
+        }
+
+        // 比较密码是否匹配
+        if (password === worker.password) {
+            // 登录成功
+            return res.status(200).json({ message: '登录成功' , user: worker});
+        } else {
+            // 密码不匹配
+            return res.status(401).json({ message: '密码错误'});
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: '服务器错误' });
+    }
+})
+
 module.exports = router
