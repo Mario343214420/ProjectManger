@@ -10,7 +10,8 @@ const ProjectSchema = new mongoose.Schema({
     members: Array, // 项目成员
     order: String, // 项目管理者
     customer: String, // 客户
-    steps: Array,
+    steps: Array, // 项目阶段
+    activeStep: Number, // 当前阶段
     isActive: { type: Boolean, default: true }, // 活跃状态
 })
 // 工作模型
@@ -19,7 +20,8 @@ const WorkSchema = new mongoose.Schema({
     step: String,
     task: String,
     surplus: String,
-    date: Date,
+    startDate: Date, // 开始时间
+    endDate: Date, // 结束时间
     worker: String
 })
 // 工作者模型

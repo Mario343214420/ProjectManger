@@ -38,6 +38,7 @@ router.get('/getWorker/:workerId', async (req, res) => {
         if (!worker) {
             return res.status(404).send('未找到工作者');
         }
+        // console.log(worker);
         res.json(worker);
     } catch (err) {
         console.error('获取工作者详情出错:', err);

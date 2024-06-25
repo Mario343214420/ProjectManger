@@ -2,12 +2,12 @@ const express = require('express')
 const router = express.Router()
 const { Works } = require('../models')
 
-// 创建项目
+// 创建工作
 router.post('/createWork', async (req, res) => {
     try {
-        const { String, step, task, surplus, date, worker } = req.body;
-        // 创建新项目
-        const newWork = new Works({ String, step, task, surplus, date, worker });
+        const { String, step, task, surplus, startDate, endDate, worker } = req.body;
+        // 创建新工作
+        const newWork = new Works({ String, step, task, surplus, startDate, endDate, worker });
 
         // 保存到数据库
         await newWork.save();
@@ -19,7 +19,7 @@ router.post('/createWork', async (req, res) => {
     }
 });
 
-// 获取所有项目
+// 获取所有工作
 router.get('/getAllWorks', async (req, res) => {
     try {
         const works = await Works.find().exec();
@@ -30,7 +30,27 @@ router.get('/getAllWorks', async (req, res) => {
     }
 });
 
-// 获取单个项目
+
+// 获取该人所有工作
+router.get('/getWorksByWorker/:workerName', async (req, res) => {
+    const { workerName } = req.params;
+    console.log(encodeURIComponent(workerName))
+    try {
+        // 使用 Mongoose 查询工作
+        const works = await Work.find({ worker: workerName });
+
+        if (!works || works.length === 0) {
+            return res.status(404).json({ message: '未找到该工作者的工作记录' });
+        }
+
+        res.json(works); // 返回查询到的工作数组
+    } catch (err) {
+        console.error('查找工作出错:', err);
+        res.status(500).json({ message: '查找工作出错' });
+    }
+});
+
+// 获取单个工作
 router.get('/getWork/:workId', async (req, res) => {
     const { workId } = req.params;
     try {
@@ -45,12 +65,12 @@ router.get('/getWork/:workId', async (req, res) => {
     }
 });
 
-// 更新项目
+// 更新工作
 router.post('/updateWork/:workId', async (req, res) => {
     const { workId } = req.params;
-    const { String, step, task, surplus, date, worker } = req.body
+    const { String, step, task, surplus, startDate, endDate, worker } = req.body
     try {
-        const updatedWork = await Works.findByIdAndUpdate(workId, { String, step, task, surplus, date, worker }, { new: true }).exec();
+        const updatedWork = await Works.findByIdAndUpdate(workId, { String, step, task, surplus, startDate, endDate, worker }, { new: true }).exec();
         if (!updatedWork) {
             return res.status(404).send('未找到要更新的工作');
         }
@@ -61,7 +81,7 @@ router.post('/updateWork/:workId', async (req, res) => {
     }
 });
 
-// 删除项目
+// 删除工作
 router.post('/deleteWork/:projectId', async (req, res) => {
     const { workId } = req.params;
     try {
