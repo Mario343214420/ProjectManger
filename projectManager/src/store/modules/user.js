@@ -1,4 +1,4 @@
-import {getUserList, loginIn} from "@/api/index.js";
+import {getUserList, getWorkList, loginIn} from "@/api/index.js";
 import {ElMessage} from "element-plus";
 
 const state = {
@@ -24,6 +24,11 @@ const actions = {
     async getAllUsers({commit}) {
         const result = await getUserList();
         // console.log(result);
+    },
+    async getAllWorks({commit}) {
+        const { name } = state.user;
+        const result = await getWorkList({workerName: name});
+        console.log(result);
     }
 };
 

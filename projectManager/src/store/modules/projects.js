@@ -1,4 +1,4 @@
-import {getProjectsList} from "@/api/index.js";
+import {getProjectsList, createProject, deleteProject} from "@/api/index.js";
 
 const state = {
     projects: []
@@ -15,6 +15,14 @@ const actions = {
         const result = await getProjectsList();
         const { data } = result
         commit('SET_PROJECTS', data.projects);
+    },
+    async createNewProject({commit}, params) {
+        // console.log(params);
+        const result = await createProject(params);
+
+    },
+    async deleteProjectFromList({commit}, params) {
+        await deleteProject(params);
     }
 };
 

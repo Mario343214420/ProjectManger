@@ -18,6 +18,12 @@ export const staticRoutes = [
         name: 'projectManage',
         component: () => import('@/views/ProjectManage/ProjectManage.vue'),
     },
+    // 工作内容界面
+    {
+        path: '/workManage',
+        name: 'workManage',
+        component: () => import('@/views/WorkManage/WorkManage.vue'),
+    },
     {
         path: '/',
         redirect: '/projectManage',
